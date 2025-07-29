@@ -1,0 +1,502 @@
+/* --- style.css --- */
+
+/* Reset dan Pengaturan Dasar */
+body {
+  margin: 0;
+  font-family: "Open Sans", sans-serif; /* Font utama yang mudah dibaca */
+  color: #333; /* Warna teks gelap agar kontras */
+  text-align: center;
+  line-height: 1.6;
+  overflow-x: hidden; /* Mencegah scroll horizontal */
+  scroll-behavior: smooth; /* Scroll yang halus */
+  min-height: 100vh; /* Memastikan konten bisa di-scroll sepenuhnya */
+  /* Background romantic akan ada di BODY - transisi dilakukan oleh fade-out overlay */
+  background: linear-gradient(
+    to bottom right,
+    #8b0000,
+    #ff1493,
+    #ff69b4
+  ); /* Merah gelap ke pink */
+  position: relative; /* Penting untuk posisi overlay */
+  z-index: 0; /* Pastikan body di bawah overlay */
+}
+
+/* Background Overlay (Untuk Background Awal yang akan di-fade-out) */
+.background-overlay {
+  position: fixed; /* Menempel pada viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Background awal ada di overlay ini */
+  background: linear-gradient(
+    to bottom right,
+    #ffafbd,
+    #ffc3a0,
+    #a0c3ff
+  ); /* Gradien pink-peach-biru muda */
+  opacity: 1; /* Awalnya terlihat penuh */
+  transition: opacity 2.5s ease-in-out; /* Transisi opacity untuk efek fade */
+  z-index: 1; /* Pastikan overlay di atas body tapi di bawah konten utama */
+  pointer-events: none; /* Penting agar tidak menghalangi interaksi user */
+}
+
+/* Ketika body memiliki kelas ini, overlay akan di-fade-out */
+body.fade-background-out .background-overlay {
+  opacity: 0;
+}
+
+/* Kontainer Utama Konten */
+.main-content {
+  position: relative; /* Penting agar konten utama berada di atas overlay */
+  z-index: 2; /* Pastikan konten utama di atas overlay dan body */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0; /* Padding vertikal */
+  min-height: 100vh; /* Memastikan bagian awal mengisi tinggi viewport */
+}
+
+/* Gaya Umum untuk Setiap Bagian Kontainer */
+.container {
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.6
+  ); /* Background kontainer transparan */
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  max-width: 90%;
+  width: 400px; /* Lebar optimal untuk tampilan standar */
+  backdrop-filter: blur(8px); /* Efek blur pada background konten */
+  margin-bottom: 40px; /* Jarak antar bagian */
+  box-sizing: border-box; /* Memastikan padding tidak menambah lebar */
+  opacity: 1; /* Default terlihat */
+  /* Transisi untuk saat sembunyi/muncul */
+  transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out,
+    height 0.8s ease-in-out, padding 0.8s ease-in-out, margin 0.8s ease-in-out,
+    visibility 0s 0.8s;
+}
+
+/* Kelas untuk Menyembunyikan Konten (Sebelum Tombol Diklik) */
+.hidden-content {
+  opacity: 0; /* Membuat tidak terlihat */
+  height: 0; /* Mengatur tinggi menjadi nol */
+  padding: 0; /* Menghilangkan padding */
+  margin: 0; /* Menghilangkan margin */
+  overflow: hidden; /* Menyembunyikan konten jika melebihi tinggi */
+  transform: translateY(20px); /* Sedikit geser ke bawah saat tersembunyi */
+  visibility: hidden; /* Memastikan elemen tidak bisa diakses (klik, dll) */
+  transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out,
+    height 0.8s ease-in-out, padding 0.8s ease-in-out, margin 0.8s ease-in-out,
+    visibility 0s 0.8s; /* Transisi saat tersembunyi */
+}
+
+/* Kelas untuk Menampilkan Konten (Setelah Tombol Diklik) */
+.visible-content {
+  opacity: 1; /* Membuat terlihat */
+  height: auto; /* Mengembalikan tinggi otomatis */
+  padding: 30px; /* Mengembalikan padding */
+  margin-bottom: 40px; /* Mengembalikan margin */
+  transform: translateY(0); /* Mengembalikan posisi normal */
+  visibility: visible; /* Memastikan elemen bisa diakses */
+  transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out,
+    height 0.8s ease-in-out, padding 0.8s ease-in-out, margin 0.8s ease-in-out,
+    visibility 0s 0s; /* Transisi saat terlihat */
+}
+
+/* Bagian Selamat Datang */
+.welcome-section {
+  min-height: 90vh; /* Memastikan bagian ini mengisi hampir seluruh layar HP */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: fadeInContent 1.5s ease-out forwards; /* Animasi fade-in saat pertama muncul */
+}
+
+h1 {
+  font-family: "Dancing Script", cursive; /* Font tulisan tangan untuk judul */
+  font-size: 2.8em;
+  margin-bottom: 20px;
+  color: #880044; /* Warna teks gelap yang romantis */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  animation: slideInFromLeft 1s ease-out forwards; /* Animasi judul dari kiri */
+}
+
+.message,
+.names {
+  font-size: 1.1em;
+  margin-bottom: 25px;
+  font-style: italic;
+  color: #555; /* Warna teks untuk pesan */
+  animation: fadeInText 1.5s ease-out forwards; /* Animasi fade-in untuk teks */
+}
+
+.names {
+  font-size: 1.3em;
+  font-weight: bold;
+  margin-top: 20px;
+  color: #660033; /* Warna teks yang lebih gelap untuk nama */
+}
+
+.couple-image {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%; /* Membuat gambar lingkaran */
+  object-fit: cover; /* Memastikan gambar mengisi lingkaran tanpa terdistorsi */
+  margin-top: 30px;
+  border: 4px solid #ffccdd; /* Border pink di sekitar gambar */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  animation: zoomIn 1s ease-out forwards; /* Animasi zoom-in untuk gambar */
+}
+
+/* Animasi untuk Elemen Awal */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInContent 1s forwards;
+}
+
+.delay-1 {
+  animation-delay: 0.5s;
+}
+.delay-2 {
+  animation-delay: 1s;
+}
+.delay-3 {
+  animation-delay: 1.5s;
+}
+.delay-4 {
+  animation-delay: 2s;
+}
+.delay-5 {
+  animation-delay: 2.5s;
+} /* Delay baru untuk tombol kejutan */
+
+@keyframes fadeInContent {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes zoomIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Indikator Scroll (Panah ke Bawah) */
+.scroll-indicator {
+  margin-top: 40px;
+  color: #777;
+  font-size: 0.9em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: bounce 2s infinite; /* Animasi memantul */
+}
+
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #777;
+  margin-top: 5px;
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Bagian Teks yang Bisa Di-scroll */
+.text-section {
+  text-align: left; /* Teks rata kiri agar mudah dibaca */
+  padding: 40px; /* Padding ini akan diatur oleh JS saat terlihat */
+}
+
+.text-section h2,
+.text-section h3 {
+  font-family: "Dancing Script", cursive;
+  color: #770033;
+  margin-bottom: 15px;
+  font-size: 2.2em;
+}
+
+.text-section p {
+  margin-bottom: 1em;
+  color: #444;
+}
+
+.text-section ul {
+  list-style-type: disc;
+  margin-left: 20px;
+  margin-bottom: 1em;
+  color: #444;
+}
+
+.text-section li {
+  margin-bottom: 0.5em;
+}
+
+/* Animasi Bunga yang Jatuh */
+.falling-flowers-container {
+  position: fixed; /* Menempel pada viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Penting agar tidak menghalangi interaksi user */
+  z-index: -1; /* Berada di belakang konten */
+  overflow: hidden;
+}
+
+.flower {
+  position: absolute;
+  width: 30px; /* Ukuran bunga */
+  height: 30px;
+  background-image: url("https://pics.clipartpng.com/midle/Beautiful_Red_Rose_PNG_Clipart-162.png"); /* Ganti dengan URL gambar kelopak bunga transparan Anda */
+  background-size: contain; /* Memastikan gambar pas di dalam elemen */
+  background-repeat: no-repeat;
+  opacity: 0;
+  animation: fall 10s linear infinite; /* Animasi jatuh tak terbatas */
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-10px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Animasi Bucket Bunga di Bagian Bawah */
+.flower-bucket-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  min-height: 60vh; /* Memberikan ruang untuk bucket bunga */
+}
+
+.flower-bucket-animation {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  overflow: hidden; /* Untuk efek animasi bunga yang keluar dari bucket */
+}
+
+.flower-bucket {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  animation: popUp 1s ease-out forwards; /* Animasi muncul untuk bucket */
+}
+
+.closing-message {
+  margin-top: 30px;
+  font-size: 1.2em;
+  font-style: italic;
+  color: #660033;
+  font-weight: bold;
+  animation: fadeInText 1.5s ease-out forwards;
+  animation-delay: 1s; /* Muncul setelah bucket */
+}
+
+/* Animasi untuk bucket */
+@keyframes popUp {
+  0% {
+    transform: scale(0.5) translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes fadeInText {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* --- Gaya untuk Dua Balok Samping (Flexbox) --- */
+.two-blocks-section {
+  display: flex; /* Mengaktifkan Flexbox */
+  flex-wrap: wrap; /* Memungkinkan balok untuk wrap ke baris baru di layar kecil */
+  justify-content: center; /* Memusatkan balok secara horizontal */
+  gap: 40px; /* Jarak antar balok */
+  margin-bottom: 40px; /* Jarak dari bagian bawah */
+  max-width: 90%; /* Sesuaikan lebar maksimum kontainer pembungkus */
+  width: 840px; /* Lebar total yang menampung dua balok (400px*2 + 40px gap) */
+  box-sizing: border-box; /* Pastikan padding tidak menambah lebar */
+}
+
+/* Kelas new-block akan mewarisi gaya .container */
+.two-blocks-section .new-block {
+  flex: 1; /* Memungkinkan balok untuk mengisi ruang yang tersedia */
+  min-width: 380px; /* Lebar minimum untuk setiap balok sebelum wrap */
+  max-width: 400px; /* Lebar maksimum per balok */
+}
+
+/* --- Gaya untuk Galeri Foto Romantis --- */
+.romantic-photos-gallery {
+  display: flex; /* Mengaktifkan Flexbox untuk galeri */
+  flex-wrap: wrap; /* Memungkinkan gambar untuk wrap ke baris baru */
+  justify-content: center; /* Memusatkan gambar secara horizontal */
+  gap: 15px; /* Jarak antar gambar */
+  margin: 30px 0; /* Margin atas dan bawah untuk memisahkan dari teks */
+}
+
+.romantic-photos-gallery img {
+  width: 100%; /* Default 100% lebar untuk mobile */
+  max-width: 280px; /* Lebar maksimum untuk setiap gambar di desktop */
+  height: auto;
+  border-radius: 10px; /* Sudut membulat untuk gambar */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Bayangan untuk efek kedalaman */
+  object-fit: cover; /* Memastikan gambar mengisi area tanpa terdistorsi */
+  transition: transform 0.3s ease; /* Transisi saat di-hover */
+}
+
+.romantic-photos-gallery img:hover {
+  transform: scale(1.05); /* Sedikit membesar saat di-hover */
+}
+
+/* --- Gaya untuk Tombol Kejutan Terakhir --- */
+.surprise-button {
+  padding: 15px 30px;
+  font-size: 1.2em;
+  background-color: #dc143c; /* Crimson */
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    opacity 0.8s ease-in-out;
+  margin-top: 50px; /* Beri jarak dari konten di atasnya */
+  margin-bottom: 50px; /* Beri jarak dari bagian bawah halaman */
+  /* Pastikan transisi untuk hidden-content/visible-content juga berlaku */
+  opacity: 0;
+  height: auto; /* Dibuat auto agar transisi height bekerja */
+  visibility: hidden;
+  transform: translateY(20px);
+}
+
+.surprise-button.visible-content {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.surprise-button:hover {
+  background-color: #b22222; /* Dark Red */
+  transform: scale(1.05);
+}
+
+.surprise-button:active {
+  transform: scale(0.95);
+}
+
+/* Responsif untuk HP (Media Queries) */
+@media (max-width: 900px) {
+  /* Ubah breakpoint ini agar aktif di layar yang lebih kecil dari 900px (tablet/HP) */
+  .two-blocks-section {
+    flex-direction: column; /* Ubah kembali menjadi kolom di layar kecil */
+    gap: 20px; /* Sesuaikan jarak antar balok di mode kolom */
+    width: 90%; /* Gunakan lebar yang lebih fleksibel di layar kecil */
+    max-width: 100%; /* Pastikan tidak melebihi lebar layar */
+  }
+  .two-blocks-section .new-block {
+    min-width: unset; /* Hapus min-width agar menyesuaikan lebar parent */
+    width: 100%; /* Setiap balok mengisi lebar penuh */
+  }
+  /* Aturan untuk container umum agar konsisten di mobile */
+  .container {
+    width: 95%;
+    max-width: 95%;
+  }
+  h1 {
+    font-size: 2.2em;
+  }
+  .message,
+  .names {
+    font-size: 1em;
+  }
+  .couple-image {
+    width: 150px;
+    height: 150px;
+  }
+  .text-section h2,
+  .text-section h3 {
+    font-size: 1.8em;
+  }
+  /* Galeri foto di mobile */
+  .romantic-photos-gallery img {
+    max-width: 100%; /* Gambar akan mengisi lebar penuh container di mobile */
+  }
+  .surprise-button {
+    padding: 12px 25px;
+    font-size: 1em;
+  }
+}
+
+/* Media query untuk layar yang sangat kecil, misalnya portrait phone */
+@media (max-width: 480px) {
+  .container {
+    padding: 15px; /* Kurangi padding untuk layar sangat kecil */
+  }
+  .text-section h2,
+  .text-section h3 {
+    font-size: 1.5em; /* Kurangi ukuran font untuk judul di layar sangat kecil */
+  }
+  .message,
+  .names,
+  .closing-message {
+    font-size: 0.9em; /* Kurangi ukuran font untuk teks di layar sangat kecil */
+  }
+}

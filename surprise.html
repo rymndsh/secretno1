@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To my beloved❤️</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background: linear-gradient(
+          to bottom right,
+          #ff69b4,
+          #ffd1dc
+        ); /* Background pink lembut */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        font-family: "Montserrat", sans-serif; /* Font default body, bisa diubah */
+        color: #8b008b; /* Ungu gelap */
+        text-align: center;
+        overflow: hidden; /* Sembunyikan bunga yang keluar batas viewport */
+      }
+      #flower-animation-container {
+        position: relative; /* Penting untuk penempatan absolute dari flower-letter */
+        width: 100vw; /* Lebar penuh viewport */
+        height: 100vh; /* Tinggi penuh viewport */
+        display: flex; /* Menggunakan Flexbox untuk memusatkan teks akhir */
+        justify-content: center; /* Memusatkan horizontal untuk Flexbox */
+        align-items: center; /* Memusatkan vertikal untuk Flexbox */
+        /* Tambahkan properti untuk detak jantung */
+        transform: scale(1); /* Status awal, tidak berdetak */
+        transform-origin: center center; /* Titik pusat detak */
+        animation: none; /* Akan diaktifkan oleh JS */
+        will-change: transform; /* Optimalisasi performa */
+      }
+      .flower-letter {
+        position: absolute;
+        font-size: 1.5em; /* Ukuran dasar huruf bunga */
+        opacity: 0; /* Awalnya tidak terlihat */
+        transform: scale(0.5); /* Awalnya lebih kecil */
+        animation: fadeInAndStay 1s ease-out forwards; /* Animasi fade in dan tetap ada */
+        font-family: "Montserrat", sans-serif; /* Font yang lebih mudah dibaca */
+        white-space: nowrap; /* Penting agar huruf tidak putus baris */
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); /* Sedikit bayangan */
+        will-change: transform, opacity; /* Optimalisasi performa animasi */
+      }
+      /* Keyframes baru: hanya fade in dan tetap di tempat */
+      @keyframes fadeInAndStay {
+        0% {
+          opacity: 0;
+          transform: scale(0.5);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      /* Keyframes untuk animasi detak jantung */
+      @keyframes heartbeat {
+        0% {
+          transform: scale(1);
+        }
+        20% {
+          transform: scale(1.05);
+        } /* Sedikit membesar */
+        40% {
+          transform: scale(1);
+        }
+        60% {
+          transform: scale(1.05);
+        }
+        80% {
+          transform: scale(1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      /* Kelas yang akan ditambahkan JS untuk memicu detak jantung */
+      .heart-pulsating {
+        animation: heartbeat 1.5s infinite alternate ease-in-out; /* Detak 1.5 detik, berulang */
+      }
+
+      /* Keyframes untuk teks akhir */
+      @keyframes fadeInText {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Gaya untuk pesan akhir */
+      .final-message {
+        /* Properti position, top, left, transform dihapus untuk mengandalkan flexbox dari parent */
+        font-family: "Dancing Script", cursive; /* Menggunakan Dancing Script untuk pesan akhir */
+        font-size: 3em;
+        color: #8b008b;
+        opacity: 0;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        animation: fadeInText 2s forwards; /* Animasi fade in */
+        animation-delay: var(--delay-final-message); /* Delay diatur JS */
+        z-index: 10; /* Pastikan di atas bunga */
+        white-space: nowrap; /* Penting agar tidak pecah baris */
+        margin: 0; /* Menghilangkan margin default h1 */
+        padding: 0; /* Menghilangkan padding default h1 */
+      }
+
+      /* Gaya untuk tombol play audio */
+      #play-audio-button {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 15px 30px;
+        font-size: 1.5em;
+        font-family: "Montserrat", sans-serif;
+        background-color: #ff1493; /* Warna pink cerah */
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        z-index: 1000; /* Pastikan di atas semua elemen lain */
+        opacity: 0; /* Awalnya sembunyikan */
+        transition: opacity 0.5s ease-in-out; /* Transisi saat muncul/sembunyi */
+      }
+
+      /* Responsive adjustments for smaller screens */
+      /* Untuk layar tablet dan mobile landscape */
+      @media (max-width: 768px) {
+        .final-message {
+          font-size: 2em; /* Ukuran font lebih kecil untuk pesan akhir */
+        }
+        .flower-letter {
+          font-size: 1em; /* Ukuran huruf bunga lebih kecil */
+        }
+        #play-audio-button {
+          font-size: 1.2em; /* Ukuran font tombol lebih kecil */
+          padding: 10px 20px; /* Padding tombol lebih kecil */
+        }
+        /* Sesuaikan skala hati jika terlihat terlalu besar di tablet */
+        #flower-animation-container {
+          /* Anda mungkin ingin menyesuaikan heartScaleX/Y di JS juga,
+                   tapi ini hanya penyesuaian visual container jika diperlukan */
+          /* transform: scale(0.9); */ /* Contoh, aktifkan jika perlu */
+        }
+      }
+      /* Untuk layar handphone portrait */
+      @media (max-width: 480px) {
+        .final-message {
+          font-size: 1.5em; /* Ukuran font lebih kecil lagi untuk pesan akhir */
+        }
+        .flower-letter {
+          font-size: 0.8em; /* Ukuran huruf bunga lebih kecil lagi */
+        }
+        #play-audio-button {
+          font-size: 1em; /* Ukuran font tombol paling kecil */
+          padding: 8px 15px; /* Padding tombol paling kecil */
+        }
+        /* Mungkin perlu penyesuaian heartScaleX/Y di JS untuk ponsel yang sangat kecil
+               agar hati tetap muat sempurna, tetapi ini tergantung tes di perangkat nyata */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="flower-animation-container"></div>
+
+    <audio id="surprise-music" loop>
+      <source src="best_part.mp3" type="audio/mpeg" />
+      Browser Anda tidak mendukung elemen audio.
+    </audio>
+
+    <audio id="romantic-sound-effect">
+      <source src="happy.mp3" type="audio/mpeg" />
+      Browser Anda tidak mendukung elemen audio.
+    </audio>
+
+    <button id="play-audio-button">Kalo dipencet jadi keren sikit</button>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const container = document.getElementById("flower-animation-container");
+        const surpriseMusic = document.getElementById("surprise-music");
+        const romanticSoundEffect = document.getElementById(
+          "romantic-sound-effect"
+        );
+        const playAudioButton = document.getElementById("play-audio-button"); // Dapatkan tombol
+
+        // Tampilkan tombol setelah DOMContentLoaded agar user bisa berinteraksi
+        playAudioButton.style.opacity = 1;
+
+        // --- Atur event listener untuk tombol play ---
+        playAudioButton.addEventListener("click", () => {
+          // Sembunyikan tombol setelah diklik
+          playAudioButton.style.opacity = 0;
+          setTimeout(() => {
+            playAudioButton.style.display = "none"; // Sembunyikan sepenuhnya
+          }, 500); // Sesuaikan dengan durasi transisi opacity
+
+          // Mulai musik latar belakang
+          surpriseMusic.play().catch((error) => {
+            console.log("Autoplay musik kejutan diblokir:", error);
+          });
+
+          // Setelah tombol diklik, kita bisa memulai logika animasi lainnya
+          startAnimationSequence();
+        });
+
+        function startAnimationSequence() {
+          // Pesan ini akan diulang huruf-hurufnya untuk membentuk hati
+          const message = "I LOVE YOU CELINE❤️ ";
+
+          const colors = [
+            "#FF1493",
+            "#FF69B4",
+            "#FFB6C1",
+            "#FFD1DC",
+            "#E6E6FA",
+          ]; // Variasi warna pink dan lavender
+
+          const numFlowers = 250;
+          // *** PENTING: Untuk responsivitas hati yang lebih baik di ponsel,
+          //    Anda mungkin perlu menyesuaikan heartScaleX dan heartScaleY secara dinamis
+          //    berdasarkan lebar viewport. Untuk saat ini, kita biarkan statis dulu
+          //    karena media queries CSS sudah menangani font size.
+          //    Jika hati terlalu besar/kecil di ponsel, ini yang perlu diubah.
+          const heartScaleX = 1.8;
+          const heartScaleY = 1.8;
+          const centerOffsetX = 50;
+          const centerOffsetY = 40;
+
+          const individualFlowerAnimationDuration = 1;
+          const delayBetweenFlowers = 0.04;
+
+          for (let i = 0; i < numFlowers; i++) {
+            const angle = (i / numFlowers) * (2 * Math.PI);
+
+            let rawX = 16 * Math.pow(Math.sin(angle), 3);
+            let rawY =
+              13 * Math.cos(angle) -
+              5 * Math.cos(2 * angle) -
+              2 * Math.cos(3 * angle) -
+              Math.cos(4 * angle);
+
+            const x = centerOffsetX + rawX * heartScaleX;
+            const y = centerOffsetY - rawY * heartScaleY;
+
+            const flower = document.createElement("span");
+            flower.classList.add("flower-letter");
+
+            let char = message.charAt(i % message.length);
+            if (char.trim() === "") {
+              char = message.charAt((i + 1) % message.length);
+            }
+            flower.textContent = char;
+
+            flower.style.color =
+              colors[Math.floor(Math.random() * colors.length)];
+            flower.style.left = `${x}vw`;
+            flower.style.top = `${y}vh`;
+
+            flower.style.animationDelay = `${i * delayBetweenFlowers}s`;
+            flower.style.fontSize = `${1.2 + Math.random() * 0.8}em`;
+            container.appendChild(flower);
+          }
+
+          const totalHeartFormationTime =
+            (numFlowers - 1) * delayBetweenFlowers +
+            individualFlowerAnimationDuration;
+
+          setTimeout(() => {
+            container.classList.add("heart-pulsating");
+          }, totalHeartFormationTime * 1000);
+
+          const delayBeforeFinalMessage = totalHeartFormationTime + 1.5;
+
+          setTimeout(() => {
+            const finalMessage = document.createElement("h1");
+            finalMessage.classList.add("final-message");
+            finalMessage.textContent = "THANK YOU YAHH!";
+            finalMessage.style.setProperty("--delay-final-message", "0s");
+            container.appendChild(finalMessage);
+
+            // Putar Sound Effect Romantis di sini (akan diputar setelah tombol diklik)
+            romanticSoundEffect.play().catch((error) => {
+              console.log("Play sound effect diblokir:", error);
+            });
+          }, delayBeforeFinalMessage * 1000);
+        }
+      });
+    </script>
+  </body>
+</html>
